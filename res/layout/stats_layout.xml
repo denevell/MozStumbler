@@ -1,0 +1,43 @@
+<LinearLayout 
+	xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+       <TextView
+           android:id="@+id/gps_satellites"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:text="@string/gps_satellites"
+           android:textAppearance="?android:attr/textAppearanceMedium" />
+
+       <TextView
+           android:id="@+id/locations_scanned"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:text="@string/locations_scanned"
+           android:textAppearance="?android:attr/textAppearanceMedium" />
+
+       <TextView
+           android:id="@+id/wifi_access_points"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:text="@string/wifi_access_points"
+           android:textAppearance="?android:attr/textAppearanceMedium" />
+
+       <TextView
+           android:id="@+id/last_upload_time"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:text="@string/last_upload_time"
+           android:textAppearance="?android:attr/textAppearanceMedium" />
+
+       <TextView
+           android:id="@+id/reports_sent"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:text="@string/reports_sent"
+           android:textAppearance="?android:attr/textAppearanceMedium" />
+
+</LinearLayout>

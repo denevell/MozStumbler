@@ -38,6 +38,7 @@ public final class MainActivity extends Activity {
     private ServiceConnection        mConnection;
     private ServiceBroadcastReceiver mReceiver;
     private int                      mGpsFixes;
+    private StatsView mStatsView;
 
     private class ServiceBroadcastReceiver extends BroadcastReceiver {
         private boolean mReceiverIsRegistered;
@@ -90,7 +91,7 @@ public final class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         enableStrictMode();
         setContentView(R.layout.activity_main);
-
+        mStatsView = (StatsView) findViewById(R.id.view_stats);
         Updater.checkForUpdates(this);
 
         // Temporarily disable map button on Gingerbread and older Honeycomb devices.
@@ -164,28 +165,15 @@ public final class MainActivity extends Activity {
             scanningBtn.setText(R.string.start_scanning);
         }
 
-        int locationsScanned = 0;
-        int APs = 0;
-        long lastUploadTime = 0;
-        long reportsSent = 0;
         try {
-            locationsScanned = mConnectionRemote.getLocationCount();
-            APs = mConnectionRemote.getAPCount();
-            lastUploadTime = mConnectionRemote.getLastUploadTime();
-            reportsSent = mConnectionRemote.getReportsSent();
+            int locationsScanned = mConnectionRemote.getLocationCount();
+            int APs = mConnectionRemote.getAPCount();
+            long lastUploadTime = mConnectionRemote.getLastUploadTime();
+            long reportsSent = mConnectionRemote.getReportsSent();
+            mStatsView.updateStats(locationsScanned, APs, lastUploadTime, reportsSent, mGpsFixes);
         } catch (RemoteException e) {
             Log.e(LOGTAG, "", e);
         }
-
-        String lastUploadTimeString = (lastUploadTime > 0)
-                                      ? DateTimeUtils.formatTimeForLocale(lastUploadTime)
-                                      : "-";
-
-        formatTextView(R.id.gps_satellites, R.string.gps_satellites, mGpsFixes);
-        formatTextView(R.id.wifi_access_points, R.string.wifi_access_points, APs);
-        formatTextView(R.id.locations_scanned, R.string.locations_scanned, locationsScanned);
-        formatTextView(R.id.last_upload_time, R.string.last_upload_time, lastUploadTimeString);
-        formatTextView(R.id.reports_sent, R.string.reports_sent, reportsSent);
     }
 
     public void onClick_ToggleScanning(View v) throws RemoteException {
@@ -263,10 +251,4 @@ public final class MainActivity extends Activity {
                                                       .penaltyLog().build());
     }
 
-    private void formatTextView(int textViewId, int stringId, Object... args) {
-        TextView textView = (TextView) findViewById(textViewId);
-        String str = getResources().getString(stringId);
-        str = String.format(str, args);
-        textView.setText(str);
-    }
 }
